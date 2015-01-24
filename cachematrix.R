@@ -1,39 +1,43 @@
+## Assignment: Caching the Inverse of a Matrix.
 
 ## makeCacheMatrix: This function creates a special "matrix" object
-## that can cache its inverse. If X is a square invertible matrix,
-## then solve(X) returns its inverse.
+## that can cache its inverse.  It sets the value of the matrix, gets
+## the value of the matrix, sets the value of the inverse, gets the value
+## of the inverse.
+
 makeCacheMatrix <- function(X = matrix()) {
-        m1 <- NULL
-        set1 <- function(y1) {
-                X <<- y1
-                m1 <<- NULL                
+        inverse <- NULL
+        set <- function(y) {
+                X <<- y
+                inverse <<- NULL                
         }
-        get1 <- function() X
-        setsolve <- function(solve) m1 <<- solve
-        getsolve <- function() m1
-        list(set1 = set1, get1 = get1,
-             setsolve = setsolve,
-             getsolve = getsolve)
+        get <- function() X
+        setinverse <- function(inverse) inverse <<- inverse
+        getinverse <- function() inverse
+        list(set = set, get = get,
+             setinverse = setinverse,
+             getinverse = getinverse)
 }
 
 ## cacheSolve: This function computes the inverse of the special "matrix"
-## returned by makeCacheMatrix above. If the inverse has already been 
+## returned by makeCacheMatrix above. If X is a square invertible matrix,
+## then solve(X) returns its inverse. If the inverse has already been 
 ## calculated (and the matrix has not changed), then the cachesolve should
 ## retrieve the inverse from the cache.
 cacheSolve <- function(X, ...) {
-        m1 <- X$getsolve()
-        if(!is.null(m1)) {
+        inverse <- X$getinverse()
+        if(!is.null(inverse)) {
                 message("getting cached data")
-                return(m1)
+                return(inverse)
         }
-        data1 <- X$get1()
-        m1 <- solve(data1, ...)
-        X$setsolve(m1)
+        data <- X$get()
+        inverse <- solve(data, ...)
+        X$setinverse(inverse)
         ## Return a matrix that is the inverse of 'X'        
-        m1
+        inverse
 }
 
 ## For example:
 ## X <- matrix(c(2,3,4,3,2,3,2,5,6,7,6,5,4,3,8,9),4,4)
-## mat1 <- makeCacheMatrix(X)
-## cacheSolve(mat1)
+## mat <- makeCacheMatrix(X)
+## cacheSolve(mat)
